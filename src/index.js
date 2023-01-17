@@ -1,86 +1,64 @@
-module.exports = function toReadable(number) {
-  let onesDigits = [
-    "",
-    "one",
-    "two",
-    "three",
-    "four",
-    "five",
-    "six",
-    "seven",
-    "eight",
-    "nine",
-  ];
-  let secDigits = [
-    "ten",
-    "eleven",
-    "twelve",
-    "thirteen",
-    "fourteen",
-    "fifteen",
-    "sixteen",
-    "seventeen",
-    "eighteen",
-    "nineteen",
-  ];
-  let tensDigits = [
-    "",
-    "",
-    "twenty",
-    "thirty",
-    "forty",
-    "fifty",
-    "sixty",
-    "seventy",
-    "eighty",
-    "ninety",
-  ];
+const first = [
+  "zero",
+  "one",
+  "two",
+  "three",
+  "four",
+  "five",
+  "six",
+  "seven",
+  "eight",
+  "nine",
+  "ten",
+  "eleven",
+  "twelve",
+  "thirteen",
+  "fourteen",
+  "fifteen",
+  "sixteen",
+  "seventeen",
+  "eighteen",
+  "nineteen",
+];
+const second = [
+  "twenty",
+  "thirty",
+  "forty",
+  "fifty",
+  "sixty",
+  "seventy",
+  "eighty",
+  "ninety",
+];
+const third = [
+  "",
+  "one hundred",
+  "two hundred",
+  "three hundred",
+  "four hundred",
+  "five hundred",
+  "six hundred",
+  "seven hundred",
+  "eight hundred",
+  "nine hundred",
+];
 
-  if (number === 0) {
-    return "zero";
-  } else if (number < 10) {
-    return onesDigits[number];
-  } else if (number >= 10 && number < 20) {
-    return secDigits[number % 10];
-  } else if (number >= 20 && number < 100) {
-    return (
-      tensDigits[Math.trunc(n / 10)] +
-      " " +
-      onesDigits[number % 10]
-    ).trim();
-  } else if (number >= 100 && n < 1000) {
-    if (number % 100 === 0) {
-      return onesDigits[number / 100] + " hundred";
-    } else if (number % 100 < 20 && 9 < number % 100) {
-      return (
-        onesDigits[Math.trunc(number / 100)] +
-        " hundred " +
-        secDigits[number % 10]
-      );
-    } else if (number % 100 !== 0 && number % 10 === 0) {
-      return (
-        onesDigits[Math.trunc(number / 100)] +
-        " hundred " +
-        tensDigits[(number % 100) / 10]
-      );
-    } else if (number % 100 < 10 && number % 10 !== 0) {
-      return (
-        onesDigits[Math.trunc(number / 100)] +
-        " hundred " +
-        onesDigits[number % 100]
-      );
-    } else if (number % 100 < 20 && 9 < number % 100) {
-      return (
-        onesDigits[Math.trunc(n / 100)] + " hundred " + secDigits[number % 10]
-      );
-    } else if (number % 100 >= 20 && number % 10 !== 0) {
-      return (
-        onesDigits[Math.trunc(number / 100)] +
-        " hundred " +
-        tensDigits[Math.trunc((number % 100) / 10)] +
-        " " +
-        onesDigits[(number % 100) % 10]
-      );
-    }
+module.exports = function toReadable(number) {
+  number = number.toString();
+  let result = "";
+
+  if (number.length === 3) {
+    result += third[number[0]] + " ";
+    number = number.slice(1);
   }
+  if (number[0] == "1") {
+    result += first[number] + " ";
+  } else {
+    if (number[1] != "0") {
+      result += first[number[1]] + " ";
+    }
+    result += second[number[0] - 2] + " ";
+  }
+
+  return result.trim();
 };
