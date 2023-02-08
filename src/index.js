@@ -44,20 +44,23 @@ const third = [
 ];
 
 module.exports = function toReadable(number) {
-  number = number.toString();
+  if (number < 0 || number > 999) {
+    return "Invalid input, input number should be between 0 and 999";
+  }
+
   let result = "";
 
-  if (number.length === 3) {
-    result += third[number[0]] + " ";
-    number = number.slice(1);
+  if (number >= 100) {
+    result += third[Math.floor(number / 100)] + " ";
+    number = number % 100;
   }
-  if (number[0] == "1") {
+  if (number < 20) {
     result += first[number] + " ";
   } else {
-    if (number[1] != "0") {
-      result += first[number[1]] + " ";
+    result += second[Math.floor(number / 10) - 2] + " ";
+    if (number % 10 !== 0) {
+      result += first[number % 10] + " ";
     }
-    result += second[number[0] - 2] + " ";
   }
 
   return result.trim();
