@@ -1,65 +1,68 @@
-const first = [
-  "zero",
-  "one",
-  "two",
-  "three",
-  "four",
-  "five",
-  "six",
-  "seven",
-  "eight",
-  "nine",
-  "ten",
-  "eleven",
-  "twelve",
-  "thirteen",
-  "fourteen",
-  "fifteen",
-  "sixteen",
-  "seventeen",
-  "eighteen",
-  "nineteen",
-];
-const second = [
-  "twenty",
-  "thirty",
-  "forty",
-  "fifty",
-  "sixty",
-  "seventy",
-  "eighty",
-  "ninety",
-];
-const third = [
-  "",
-  "one hundred",
-  "two hundred",
-  "three hundred",
-  "four hundred",
-  "five hundred",
-  "six hundred",
-  "seven hundred",
-  "eight hundred",
-  "nine hundred",
-];
-
-module.exports = function toReadable(number) {
-  if (number < 0 || number > 999) {
-    return "Invalid input, input number should be between 0 and 999";
-  }
-
+module.exports = function toReadable(num) {
+  let digits = [
+    "",
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+  ];
+  let tens = [
+    "",
+    "",
+    "twenty",
+    "thirty",
+    "forty",
+    "fifty",
+    "sixty",
+    "seventy",
+    "eighty",
+    "ninety",
+  ];
+  let teens = [
+    "ten",
+    "eleven",
+    "twelve",
+    "thirteen",
+    "fourteen",
+    "fifteen",
+    "sixteen",
+    "seventeen",
+    "eighteen",
+    "nineteen",
+  ];
   let result = "";
 
-  if (number >= 100) {
-    result += third[Math.floor(number / 100)] + " ";
-    number = number % 100;
-  }
-  if (number < 20) {
-    result += first[number] + " ";
-  } else {
-    result += second[Math.floor(number / 10) - 2] + " ";
-    if (number % 10 !== 0) {
-      result += first[number % 10] + " ";
+  num = String(num);
+
+  if (num === "0") {
+    result = "zero";
+  } else if (num.length === 1) {
+    result = digits[num];
+  } else if (num.length === 2) {
+    if (num[0] === "1") {
+      result = teens[num[1]];
+    } else if (num[1] === "0") {
+      result = tens[num[0]];
+    } else {
+      result = tens[num[0]] + " " + digits[num[1]];
+    }
+  } else if (num.length === 3) {
+    if (num[1] === "1") {
+      result = digits[num[0]] + " hundred " + teens[num[2]];
+    } else if (num[1] === "0") {
+      if (num[2] === "0") {
+        result = digits[num[0]] + " hundred";
+      } else {
+        result = digits[num[0]] + " hundred " + digits[num[2]];
+      }
+    } else {
+      result =
+        digits[num[0]] + " hundred " + tens[num[1]] + " " + digits[num[2]];
     }
   }
 
